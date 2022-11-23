@@ -9,17 +9,21 @@ env:
 phases:
   install:
     runtime-versions:
-        nodejs: 14
+        nodejs: 16
     commands:
         - echo Installing source NPM dependencies...
+        - cd my-app
         - npm install
         - npm install -g @angular/cli
   build:
     commands:
         - echo Build started 
-        - ng build
+        - ng build  
+        - echo build process finished, we should uplload to S3 now
+        - aws s3 sync dist s3://www.validitii.com 
+        - aws s3 sync dist s3://validitii.com 
 artifacts:
     files:
         - '**/*'
-    base-directory: 'dist*'
+    base-directory: '**/dist'
     discard-paths: yes
